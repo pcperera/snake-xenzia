@@ -6,7 +6,7 @@ import numpy as np
 
 pygame.init()
 font = pygame.font.Font('arial.ttf', 25)
-#font = pygame.font.SysFont('arial', 25)
+
 
 class Direction(Enum):
     RIGHT = 1
@@ -14,17 +14,19 @@ class Direction(Enum):
     UP = 3
     DOWN = 4
 
+
 Point = namedtuple('Point', 'x, y')
 
 # rgb colors
 WHITE = (255, 255, 255)
-RED = (200,0,0)
+RED = (200, 0, 0)
 BLUE1 = (0, 0, 255)
 BLUE2 = (0, 100, 255)
-BLACK = (0,0,0)
+BLACK = (0, 0, 0)
 
 BLOCK_SIZE = 20
 SPEED = 40
+
 
 class SnakeGameAI:
 
@@ -36,7 +38,6 @@ class SnakeGameAI:
         pygame.display.set_caption('Snake')
         self.clock = pygame.time.Clock()
         self.reset()
-
 
     def reset(self):
         # init game state
@@ -84,7 +85,7 @@ class SnakeGameAI:
         # 4. place new food or just move
         if self.head == self.food:
             self.score += 1
-            reward = 10
+            reward = 15
             self._place_food()
         else:
             self.snake.pop()
