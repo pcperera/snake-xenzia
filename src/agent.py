@@ -2,11 +2,11 @@ import torch
 import random
 import numpy as np
 from collections import deque
-from game import SnakeGameAI, Direction, Point
+from baseline_game import SnakeGameAI, Direction, Point
 from model import Linear_QNet, QTrainer
 from helper import plot
 
-MAX_MEMORY = 100_000
+MAX_MEMORY = 500_000
 BATCH_SIZE = 1000
 LR = 0.001
 
@@ -107,7 +107,9 @@ def train():
     record = 0
     agent = Agent()
     game = SnakeGameAI()
-    while True:
+    max_games = 250
+
+    while agent.n_games < max_games:
         # get old state
         state_old = agent.get_state(game)
 
