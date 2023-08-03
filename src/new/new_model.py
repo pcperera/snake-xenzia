@@ -6,15 +6,22 @@ import os
 import numpy
 
 
-class DeepQNet(nn.Module):
-    def __init__(self, input_size, hidden_size, output_size):
-        super(DeepQNet, self).__init__()
-        self.linear1 = nn.Linear(input_size, hidden_size)
-        self.linear2 = nn.Linear(hidden_size, output_size)
+class QNet(nn.Module):
+    def __init__(self, input_size, hidden_sizes, output_size):
+        super(QNet, self).__init__()
+        self.hidden_layers = nn.ModuleList()
+        in_size = input_size
+
+        for hidden_size in hidden_sizes:
+            self.hidden_layers.append(nn.Linear(in_size, hidden_size))
+            in_size = hidden_size
+
+        self.output_layer = nn.Linear(in_size, output_size)
 
     def forward(self, x):
-        x = F.relu(self.linear1(x))
-        x = self.linear2(x)
+        for layer in self.hidden_layers:
+            x = F.relu(layer(x))
+        x = self.output_layer(x)
         return x
 
     def save(self, file_name='model.pth'):
