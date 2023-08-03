@@ -11,14 +11,14 @@ BATCH_SIZE = 1000
 LR = 0.001
 MAX_GAMES = 300
 
-class Agent:
 
+class Agent:
     def __init__(self):
         self.n_games = 0
         self.epsilon = 0 # randomness
         self.gamma = 0.60 # discount rate
         self.memory = deque(maxlen=MAX_MEMORY) # popleft()
-        self.model = QNet(11, [512 * 16], 3)
+        self.model = QNet(11, [1024 * 8], 3)
         self.trainer = QTrainer(self.model, lr=LR, gamma=self.gamma)
 
 
