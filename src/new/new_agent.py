@@ -3,12 +3,13 @@ import random
 import numpy as np
 from collections import deque
 from new_game import SnakeGameAI, Direction, Point
-from new_model import Linear_QNet, QTrainer
+from new_model import DeepQNet, QTrainer
 from src.helper import plot
 
 MAX_MEMORY = 1000_000
 BATCH_SIZE = 1000
 LR = 0.001
+MAX_GAMES = 300
 
 class Agent:
 
@@ -17,7 +18,7 @@ class Agent:
         self.epsilon = 0 # randomness
         self.gamma = 0.60 # discount rate
         self.memory = deque(maxlen=MAX_MEMORY) # popleft()
-        self.model = Linear_QNet(11, 1024, 3)
+        self.model = DeepQNet(11, 4096, 3)
         self.trainer = QTrainer(self.model, lr=LR, gamma=self.gamma)
 
 
@@ -87,8 +88,8 @@ class Agent:
     def get_action(self, state):
         # random moves: tradeoff exploration / exploitation
         self.epsilon = 80 - self.n_games
-        final_move = [0,0,0]
-        if random.randint(0, 1000) < self.epsilon:
+        final_move = [0, 0, 0]
+        if random.randint(0, MAX_GAMES) < self.epsilon:
             move = random.randint(0, 2)
             final_move[move] = 1
         else:
@@ -107,9 +108,8 @@ def train():
     record = 0
     agent = Agent()
     game = SnakeGameAI()
-    max_games = 300
 
-    while agent.n_games < max_games:
+    while agent.n_games < MAX_GAMES:
         # get old state
         state_old = agent.get_state(game)
 
